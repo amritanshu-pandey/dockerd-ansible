@@ -1,8 +1,8 @@
 ---
-- include_tasks: prepare-redhat.yml
+- include_tasks: prepare-redhat.yaml
   when: ansible_os_family == 'RedHat'
 
-- include_tasks: prepare-deb.yml
+- include_tasks: prepare-deb.yaml
   when: ansible_os_family == 'Debian'
 
 
@@ -10,3 +10,32 @@
   package:
     name: 'docker-ce'
     state: present
+
+- name: Enable docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: adding existing user '{{ user }}' to group docker
+  user:
+    name: '{{ item }}'
+    groups: docker
+    append: yes
+  with_items:
+    - vagrant
+  register: added_to_group
+
+- name: reboot server if user group was changed
+  shell: "sleep 5 && reboot"
+  async: 1
+  poll: 0
+  when: added_to_group is changed
+
+- name: Wait for the reboot to complete if there was a change.
+  wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300
+  when: added_to_group is changed

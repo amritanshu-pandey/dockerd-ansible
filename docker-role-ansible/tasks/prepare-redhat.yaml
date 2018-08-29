@@ -1,6 +1,6 @@
 ---
 - name: Uninstall old versions of dockers if present
-  apt:
+  yum:
     name: '{{ item }}'
     state: absent
   with_items:
@@ -16,7 +16,7 @@
     - docker-engine
 
 - name: install dependencies
-  apt:
+  yum:
     name: '{{ item }}'
     state: present
   with_items:
@@ -24,8 +24,15 @@
     - device-mapper-persistent-data
     - lvm2
 
+- name: add Docker’s official GPG key
+  rpm_key:
+    key: 'https://download.docker.com/linux/centos/gpg'
+    state: present
 
-- name: add Docker’s official repo
-  yum_repository:
-    name: docker-ce
-    baseurl: 'https://download.docker.com/linux/centos/docker-ce.repo'
+- name: add Docker yum repository
+  get_url:
+    url: "https://download.docker.com/linux/centos/docker-ce.repo"
+    dest: '/etc/yum.repos.d/'
+    owner: root
+    group: root
+    mode: 0644
