@@ -1,0 +1,12 @@
+---
+- include_tasks: prepare-redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include_tasks: prepare-deb.yml
+  when: ansible_os_family == 'Debian'
+
+
+- name: Install docker
+  package:
+    name: 'docker-ce'
+    state: present

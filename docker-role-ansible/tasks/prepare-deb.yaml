@@ -1,0 +1,31 @@
+---
+- name: Uninstall old versions of dockers (docker.io) if present
+  apt:
+    name: '{{ item }}'
+    state: absent
+  with_items:
+    - docker
+    - docker-engine
+    - docker.io
+
+- name: install dependencies
+  apt:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
+
+
+- name: add Docker’s official GPG key
+  apt_key:
+    url: 'https://download.docker.com/linux/ubuntu/gpg'
+    state: present
+
+
+- name: Add docker apt repository
+  apt_repository:
+    repo: deb [arch={{ APT_ARCH }}] https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} {{ APT_RELEASE_CHANNEL }}
+    state: present
