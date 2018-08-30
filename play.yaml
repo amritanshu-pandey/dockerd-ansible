@@ -1,5 +1,0 @@
----
-- hosts: docker-hosts
-  roles:
-    - role: docker-role-ansible
-
