@@ -22,8 +22,7 @@
     name: '{{ item }}'
     groups: docker
     append: yes
-  with_items:
-    - vagrant
+  with_items: "{{ docker_user_list }}"
   register: added_to_group
 
 - name: reboot server if user group was changed

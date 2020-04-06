@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  name: Install docker daemon
+  become: true
+  connection: local
+  roles:
+    - amritanshu_pandey.dockerd_ansible

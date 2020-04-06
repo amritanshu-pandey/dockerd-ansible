@@ -18,12 +18,10 @@
     - curl
     - software-properties-common
 
-
 - name: add Docker’s official GPG key
   apt_key:
-    url: 'https://download.docker.com/linux/ubuntu/gpg'
+    url: "{{ DOCKER_APT_GPG_KEY_URL }}"
     state: present
-
 
 - name: Add docker apt repository
   apt_repository:

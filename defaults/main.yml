@@ -1,3 +1,6 @@
 ---
 APT_ARCH: amd64
 APT_RELEASE_CHANNEL: stable
+DOCKER_APT_GPG_KEY_URL: https://download.docker.com/linux/ubuntu/gpg
+DOCKER_YUM_GPG_KEY_URL: https://download.docker.com/linux/centos/gpg
+docker_user_list: []

@@ -1,31 +1,41 @@
-Role Name
-=========
+dockerd-ansible
+===============
 
-A brief description of the role goes here.
+Role to install and configure Docker daemon
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- Debian >= 9
+- Ubuntu >= 18.04
+- Users sepcified in variable `docker_user_list` must be already created in the OS
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+- `APT_ARCH`: System architecture in the format understood by debian/apt [Default: amd64]
+- `APT_RELEASE_CHANNEL`: Docker release channel (stable/edge/nightly) [Default: stable]
+- `DOCKER_APT_GPG_KEY_URL`: Debian GPG key url for docker [Default: https://download.docker.com/linux/ubuntu/gpg]
+- `DOCKER_YUM_GPG_KEY_URL`: Centos/RHEL GPG key url for docker: [https://download.docker.com/linux/centos/gpg]
+- `docker_user_list`: List of users to be added to the os group `docker`
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+- A Debian or RHEL based system
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
+```yaml
+    ---
+    - hosts: localhost
+      name: Install docker daemon
+      become: true
+      connection: local
       roles:
-         - { role: username.rolename, x: 42 }
+        - amritanshu_pandey.dockerd_ansible
+```
 
 License
 -------
